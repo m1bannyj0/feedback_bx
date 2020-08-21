@@ -1,0 +1,2 @@
+var SAnswer = new ShapeAnswer;
+
