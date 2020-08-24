@@ -7,12 +7,37 @@
  * @global CMain     $APPLICATION
  * @global CUser     $USER
  */
+if (empty($_SERVER['DOCUMENT_ROOT'])) {
+// if (1 == 1) {
+	$islcl = 1;
+	if (!extension_loaded('mysqli')) {
+		// if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+		dl('php_mysqli.dll');
+		// } else {
+		// dl('sqlite.so');
+		// }
+	}
+	
+	$docr=implode('\\',array_slice(explode('\\',__FILE__),0,4));	
+	$_SERVER["DOCUMENT_ROOT"]=$docr;//"D:/wxampp/domains/test.ru";
+		ini_set('default_charset','UTF-8');
+		mb_internal_encoding('UTF-8'); 
+		mb_http_output('IBM866');
+		ob_start("mb_output_handler"); 
+	// require($_SERVER["DOCUMENT_ROOT"] . "prolog_before.php");
+	// require($_SERVER["DOCUMENT_ROOT"] . "/local/vendor/lib/today.php");
+	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
+
+}else{
+	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
+	}
    
 use Bitrix\Main\Localization\Loc,
 Bitrix\Main\ModuleManager,
 Bitrix\Main\Entity,
-Bitrix\Main\Loader;
+Bitrix\Main\Loaderj,
+Bitrix\Main\Application;;
 
 Loc::loadMessages(__FILE__);
 
