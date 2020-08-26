@@ -12,9 +12,8 @@
 /** @var CBitrixComponent $component */
 
 include "functions.php"; ?>
-
 <main id="c-forms-container" class="cognito c-firefox c-med">
-<noindex>
+
 
     <form id="c-forms" action="/form/" method="post" enctype="multipart/form-data">
         <div class="c-forms-form" tabindex="0">
@@ -30,58 +29,65 @@ include "functions.php"; ?>
                     <div class="c-forms-form-main c-span-24 c-sml-span-12">
                         <div class="c-name c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
                             <div class="c-label  "><label id="c-0-6-label" for="c-0-6">Name <span
-                                    class="c-offscreen c-required-screenreaders">required</span> <span
-                                    class="c-offscreen c-validation-screenreaders">, <span></span></span></label></div>
+                                            class="c-offscreen c-required-screenreaders">required</span> <span
+                                            class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
+                            </div>
                             <div class="c-editor"><input type="text" id="c-0-6" placeholder="" name="name"></div>
                             <div class="c-validation" aria-hidden="true"></div>
                         </div>
                         <div class="c-phone c-phone-international c-field  c-col-9 c-sml-col-1 c-span-8 c-sml-span-12  c-required">
                             <div class="c-label  "><label id="c-1-5-label" for="c-1-5">Phone <span
-                                    class="c-offscreen c-required-screenreaders">required</span> <span
-                                    class="c-offscreen c-validation-screenreaders">, <span>Phone is required.</span></span></label>
+                                            class="c-offscreen c-required-screenreaders">required</span> <span
+                                            class="c-offscreen c-validation-screenreaders">, <span>Phone is required.</span></span></label>
                             </div>
-                            <div class="c-editor c-editor-phone"><input type="text" name="phone" id="c-1-5" placeholder="+7"
+                            <div class="c-editor c-editor-phone"><input type="text" name="phone" id="c-1-5"
+                                                                        placeholder="+7"
                                                                         autocomplete="tel" novalidate=""></div>
                             <div class="c-validation" aria-hidden="true">Phone is required.</div>
                         </div>
                         <div class="c-text-email c-field  c-col-17 c-sml-col-1 c-span-8 c-sml-span-12">
                             <div class="c-label  "><label id="c-2-4-label" for="c-2-4">E-mail <span
-                                    class="c-offscreen c-required-screenreaders">required</span> <span
-                                    class="c-offscreen c-validation-screenreaders">, <span></span></span></label></div>
+                                            class="c-offscreen c-required-screenreaders">required</span> <span
+                                            class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
+                            </div>
                             <div class="c-editor"><input type="text" id="c-2-4" placeholder="" name="email"></div>
                             <div class="c-validation" aria-hidden="true"></div>
                         </div>
                         <div class="c-choice-dropdown c-color c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
-                            <div class="c-label  "><label id="c-3-3-label" for="c-3-3">Выбор цвета <span
-                                    class="c-offscreen c-required-screenreaders">required</span> <span
-                                    class="c-offscreen c-validation-screenreaders">, <span></span></span></label></div>
+                            <div class="c-label  "><label id="c-3-3-label" for="c-3-3">Р’С‹Р±РѕСЂ С†РІРµС‚Р° <span
+                                            class="c-offscreen c-required-screenreaders">required</span> <span
+                                            class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
+                            </div>
                             <div class="c-editor">
                                 <div class="c-dropdown"><select id="c-3-3" type="dropitem">
-                                    <option></option>
-                                    <option selected="selected" value="red">Касный</option>
-                                    <option value="green">Зеленый</option>
-                                    <option value="blue">Синий</option>
-                                </select></div>
+                                        <option></option>
+                                        <option selected="selected" value="red">РљР°СЃРЅС‹Р№</option>
+                                        <option value="green">Р—РµР»РµРЅС‹Р№</option>
+                                        <option value="blue">РЎРёРЅРёР№</option>
+                                    </select></div>
                             </div>
                             <div class="c-validation" aria-hidden="true"></div>
                         </div>
                         <div class="c-text-message c-field  c-col-1 c-sml-col-1 c-span-12 c-sml-span-12">
-                            <div class="c-label  "><label id="c-4-2-label" for="c-4-2">Текствое сообщение <span
-                                    class="c-offscreen c-required-screenreaders">required</span> <span
-                                    class="c-offscreen c-validation-screenreaders">, <span></span></span></label></div>
-                            <div class="c-editor"><textarea id="c-4-2" placeholder="" name="texmessage"></textarea></div>
+                            <div class="c-label  "><label id="c-4-2-label" for="c-4-2">РўРµРєСЃС‚РІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ <span
+                                            class="c-offscreen c-required-screenreaders">required</span> <span
+                                            class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
+                            </div>
+                            <div class="c-editor"><textarea id="c-4-2" placeholder="" name="texmessage"></textarea>
+                            </div>
                             <div class="c-validation" aria-hidden="true"></div>
                         </div>
                     </div>
                 </div>
                 <div id="c-recaptcha-div"></div>
                 <div class="left top text" id="n2_57" style="padding-top: 39px;">*</div>
-                <div class="left top text" id="n2_58" style="padding-top: 39px;padding-bottom: 40px;">— поля,
-                    обязательные для заполнения
+                <div class="left top text" id="n2_58" style="padding-top: 39px;padding-bottom: 40px;">вЂ” РїРѕР»СЏ,
+                    РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ
                 </div>
 
-                <div id="c-agree" style=""><input type="checkbox" required="" name="agree">Я даю согласие на обработку персональных
-                    данных
+                <div id="c-agree" style=""><input type="checkbox" required="" name="agree">РЇ РґР°СЋ СЃРѕРіР»Р°СЃРёРµ РЅР° РѕР±СЂР°Р±РѕС‚РєСѓ
+                    РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С…
+                    РґР°РЅРЅС‹С…
                 </div>
                 <div class="c-forms-error">
                     <div aria-hidden="true" class="c-validation"></div>
@@ -98,8 +104,7 @@ include "functions.php"; ?>
         </div>
         <input type="hidden" name="NoBots" id="c-nobots"
                value="Qhh72Y66TXMq1cGOffFZYzIr+/kx7wxxt16SUxuYcaWqqC0biQ3jBIA8vGcsNwDot4J+zNZs/PrrJJivWPTE2A==|7a3a9032d5f00e31e40063cba08cc4a3"><input
-            type="hidden" name="NoBots" id="c-nobots"
-            value="zqEfLOZNpCwAgY1jimOEe067ghRvgTS/pkU82X2PSQyinKQ2YcAsNzknfcQMFQlIiobVvWTDMjRrHgLbP484WQ==|dde397f6c055cf07a01921600199a5d0">
+                type="hidden" name="NoBots" id="c-nobots"
+                value="zqEfLOZNpCwAgY1jimOEe067ghRvgTS/pkU82X2PSQyinKQ2YcAsNzknfcQMFQlIiobVvWTDMjRrHgLbP484WQ==|dde397f6c055cf07a01921600199a5d0">
     </form>
-</noindex>
 </main>

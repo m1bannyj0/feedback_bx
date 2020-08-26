@@ -7,41 +7,18 @@
  * @global CMain     $APPLICATION
  * @global CUser     $USER
  */
-if (empty($_SERVER['DOCUMENT_ROOT'])) {
-// if (1 == 1) {
-	$islcl = 1;
-	if (!extension_loaded('mysqli')) {
-		// if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		dl('php_mysqli.dll');
-		// } else {
-		// dl('sqlite.so');
-		// }
-	}
-	
-	$docr=implode('\\',array_slice(explode('\\',__FILE__),0,4));	
-	$_SERVER["DOCUMENT_ROOT"]=$docr;//"D:/wxampp/domains/test.ru";
-		ini_set('default_charset','UTF-8');
-		mb_internal_encoding('UTF-8'); 
-		mb_http_output('IBM866');
-		ob_start("mb_output_handler"); 
-	// require($_SERVER["DOCUMENT_ROOT"] . "prolog_before.php");
-	// require($_SERVER["DOCUMENT_ROOT"] . "/local/vendor/lib/today.php");
-	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
-
-}else{
-	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
-	}
-   
 use Bitrix\Main\Localization\Loc,
 Bitrix\Main\ModuleManager,
 Bitrix\Main\Entity,
-Bitrix\Main\Loaderj,
-Bitrix\Main\Application;;
+Bitrix\Main\Loader,
+Bitrix\Main\Application,
+\Bitrix\Main\IO;
 
 Loc::loadMessages(__FILE__);
 
-
+if (class_exists("Shape_Answer"))
+	return;
 /**
  * Class SHAPE_ANSWER
  */
@@ -87,6 +64,7 @@ class Shape_Answer extends CModule
         ModuleManager::UnRegisterModule($this->MODULE_ID);
         $this->UnInstallDB();
         $this->UnInstallFiles();
+		Option::delete($this->MODULE_ID);
     }
     
     public function installDB()
@@ -99,8 +77,8 @@ class Shape_Answer extends CModule
                     
                         
                     } catch (Exception $e) {
-                        $this->showException($e);
-                        // return false;
+                        // $this->showException($e);
+                        return false;
                     }
                     
                     return true;
@@ -116,92 +94,90 @@ class Shape_Answer extends CModule
         }
     }    
     
-    public function InstallFiles()
-    {
-        
-    }
-    
-    public function UnInstallFiles()
-    {
-        
-    }
-}
-
-class ShapeTable extends Entity\DataManager
-{
-
-    /*
-    Дата (дата добавления/обновления пользовательского согласия) — Тип для хранения времени
-    ID согласия — Число
-    Имя — Текст
-    Телефон — Текст
-    IP — Текст
-    URL — Текст
-    */
-
-	public static function getFilePath()
+	function InstallFiles()
 	{
-		return __FILE__;
+		/*CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shape.answer/install/admin", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin", true);
+		$path = $this->GetPath()."/install/components";
+
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path)){
+			CopyDirFiles($path, $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
+		}*/
+		// CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shape.answer/install/tools", $_SERVER["DOCUMENT_ROOT"]."/bitrix/tools/$this->MODULE_ID", true);
+
+		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$this->MODULE_ID.'/admin'))
+		{
+			if ($dir = opendir($p))
+			{
+				while (false !== $item = readdir($dir))
+				{
+					if ($item == '..' || $item == '.')
+						continue;
+					CopyDirFiles($p.'/'.$item, $_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$item, $ReWrite = True, $Recursive = True);
+				}
+				closedir($dir);
+				
+			}
+		}
+		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$this->MODULE_ID.'/install/components'))
+		{
+			if ($dir = opendir($p))
+			{
+				while (false !== $item = readdir($dir))
+				{
+					if ($item == '..' || $item == '.')
+						continue;
+					CopyDirFiles($p.'/'.$item, $_SERVER['DOCUMENT_ROOT'].'/bitrix/components/'.$item, $ReWrite = True, $Recursive = True);
+				}
+				closedir($dir);
+			}
+		}
+		return true;
 	}
 
-	public static function getTableName()
+	function UnInstallFiles()
 	{
-		return 'a_shape_answer';
+		// DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shape.answer/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
+		// IO\Directory::deleteDirectory($_SERVER["DOCUMENT_ROOT"].'/bitrix/components/'.$this->MODULE_ID.'/');
+
+
+		// DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/shape.answer/install/tools/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/tools/$this->MODULE_ID");
+
+		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$this->MODULE_ID.'/admin'))
+		{
+			if ($dir = opendir($p))
+			{
+				while (false !== $item = readdir($dir))
+				{
+					if ($item == '..' || $item == '.')
+						continue;
+					unlink($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$this->MODULE_ID.'_'.$item);
+				}
+				closedir($dir);
+			}
+		}
+		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$this->MODULE_ID.'/install/components'))
+		{
+			if ($dir = opendir($p))
+			{
+				while (false !== $item = readdir($dir))
+				{
+					if ($item == '..' || $item == '.' || !is_dir($p0 = $p.'/'.$item))
+						continue;
+
+					$dir0 = opendir($p0);
+					while (false !== $item0 = readdir($dir0))
+					{
+						if ($item0 == '..' || $item0 == '.')
+							continue;
+						DeleteDirFilesEx('/bitrix/components/'.$item.'/'.$item0);
+					}
+					closedir($dir0);
+				}
+				closedir($dir);
+			}
+		}
+		return true;
 	}
 
-	public static function getMap()
-	{
-		return array(
-			'ID' => array(
-				'data_type' => 'integer',
-				'primary' => true,
-				'autocomplete' => true,
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_ID_FIELD'),
-			),
-			'ID_AGREE' => array(
-				'data_type' => 'integer',
-				'required' => true,
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_ID_AGREE_FIELD'),
-			),
-			'NAME' => array(
-				'data_type' => 'text',
-				'default_value' => '',
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_NAME_FIELD'),
-			),
-			'PHONE' => array(
-				'data_type' => 'text',
-				'default_value' => '',
-				'validation' => array(__CLASS__, 'validatePhone'),
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_PHONE_FIELD'),
-			),
-			'DATE' => array(
-				'data_type' => 'datetime',
-				'default_value' => '',
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_DATE_FIELD'),
-			),
-			'IP' => array(
-				'data_type' => 'text',
-				'default_value' => '',
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_IP_FIELD'),
-			),
-			'URL' => array(
-				'data_type' => 'text',
-				'default_value' => '',
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_URL_FIELD'),
-			),
-			'SORT' => array(
-				'data_type' => 'integer',
-				'default_value' => 500,
-				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_SORT_FIELD'),
-			),
-		);
-	}
-
-	public static function validatePhone()
-	{
-		return array(
-			new Entity\Validator\Length(null, 255),
-		);
-	}
 }
 

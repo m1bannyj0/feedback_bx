@@ -11,15 +11,15 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 
-if ($arParams['POLZOVATELSKOE_SOGLASHENIE_PAGE'] && $arParams['POLITIKA_KONFIDENCIALNOSTI_PAGE']){
+if ($arParams['POLZOVATELSKOE_SOGLASHENIE_PAGE'] && $arParams['POLITIKA_KONFIDENCIALNOSTI_PAGE']) {
 	?>
-	<div class="av-comments__personal-privacy">
-		<?=GetMessage(
+    <div class="av-comments__personal-privacy">
+		<?= GetMessage(
 			"SHAPE_ANSWER_PERSONAL_PRIVACY_TEXT",
 			Array(
 				'#POLZOVATELSKOE_SOGLASHENIE_PAGE#' => $arParams['POLZOVATELSKOE_SOGLASHENIE_PAGE'],
 				'#POLITIKA_KONFIDENCIALNOSTI_PAGE#' => $arParams['POLITIKA_KONFIDENCIALNOSTI_PAGE'],
 			)
-		)?>
-	</div>
+		) ?>
+    </div>
 <? } ?>
