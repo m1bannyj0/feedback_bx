@@ -1,12 +1,12 @@
 <?
+
 use Bitrix\Main\Localization\Loc;
 
 Loc::loadMessages(__FILE__);
 
 global $APPLICATION;
 
-if ($APPLICATION->GetGroupRight("shape.answer") != "D")
-{
+if ($APPLICATION->GetGroupRight("shape.answer") != "D") {
 	$aMenu = array(
 		"parent_menu" => "global_menu_services",
 		"section" => "shape.answer",
@@ -19,12 +19,12 @@ if ($APPLICATION->GetGroupRight("shape.answer") != "D")
 		"items" => array(
 			array(
 				"text" => 'SHAPE_ANSWER_MENU_AUTO',//Loc::getMessage("SHAPE_ANSWER_MENU_INDEX"),
-				"url" => "SHAPE_ANSWER_index.php?lang=" . LANGUAGE_ID,
+				"url" => "shape_sender_index.php?lang=" . LANGUAGE_ID,
 				"title" => Loc::getMessage("SHAPE_ANSWER_MENU_INDEX"),
 			),
 			array(
-				"text" =>'SHAPE_ANSWER_MENU_AUTO' ,//Loc::getMessage("SHAPE_ANSWER_MENU_AUTO"),
-				"url" => "SHAPE_ANSWER_auto.php?lang=" . LANGUAGE_ID,
+				"text" => 'SHAPE_ANSWER_MENU_AUTO',//Loc::getMessage("SHAPE_ANSWER_MENU_AUTO"),
+				"url" => "shape_sender_auto.php?lang=" . LANGUAGE_ID,
 				"title" => Loc::getMessage("SHAPE_ANSWER_MENU_AUTO"),
 			),
 		)

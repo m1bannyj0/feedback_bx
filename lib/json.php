@@ -2,6 +2,7 @@
 /** options
  * Copyright (c) 2020. . https://github.com/mrBannyJo
  */
+
 namespace Shape\Answer;
 
 use Exception;
