@@ -1,8 +1,7 @@
 <?php
-/** options
+/** hltable
  * Copyright (c) 2020. . https://github.com/mrBannyJo
  */
-
 namespace Shape\Answer;
 
 
@@ -16,16 +15,21 @@ class HLTable
 
 	public $MODULE_ID = "shape.answer";
 
-	public $storages = [];
+	public const arFields = [
+			'ID_AGREE'=>['ID'=>'ID_AGREE','NAME'=>'ID AGREE','FIELDCODE'=>'UF_ID_AGREE','HIDE'=>false]
+			,'NAME'=>['ID'=>'NAME','NAME'=>'NAME','FIELDCODE'=>'UF_NAME','HIDE'=>false]
+			,'PHONE'=>['ID'=>'PHONE','NAME'=>'PHONE','FIELDCODE'=>'UF_PHONE','HIDE'=>false]
+			,'DATE'=>['ID'=>'DATE','NAME'=>'DATE','FIELDCODE'=>'UF_DATE','HIDE'=>false]
+			,'IP'=>['ID'=>'IP','NAME'=>'IP','FIELDCODE'=>'UF_IP','HIDE'=>true]
+			,'URL'=>['ID'=>'URL','NAME'=>'URL','FIELDCODE'=>'UF_URL','HIDE'=>true]
+			,'COLOR'=>['ID'=>'COLOR','NAME'=>'COLOR','FIELDCODE'=>'UF_COLOR','HIDE'=>false]
+			,'MSG'=>['ID'=>'MSG','NAME'=>'MSG','FIELDCODE'=>'UF_MSG','HIDE'=>false]
+			,'EMAIL'=>['ID'=>'EMAIL','NAME'=>'EMAIL','FIELDCODE'=>'UF_EMAIL','HIDE'=>false]
+		];
 
 	public function __construct($arIncm = [])
 	{
-		$this->storages = [
-			'AA' => '10000000',
-			'BB' => '00000001',
-			'CC' => '11111111',
-			'DD' => '12345678'
-		];
+		
 	}
 
 	public function deleteHL($ID = 0)
@@ -120,6 +124,12 @@ class HLTable
 						'USER_TYPE_ID' => 'double',
 						'SHOW_IN_LIST' => 'N',
 						'XML_ID' => 'UF_SORT'
+					),
+					array(
+						'FIELD_NAME' => 'UF_COLOR',
+						'USER_TYPE_ID' => 'string',
+						'SHOW_IN_LIST' => 'N',
+						'XML_ID' => 'UF_COLOR'
 					),
 					array(
 						'FIELD_NAME' => 'UF_MSG',

@@ -2,9 +2,9 @@
 
 use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
-use Bitrix\Shape;
+use Shape\Answer;
 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 
 Loc::loadMessages(__FILE__);
 
@@ -12,20 +12,13 @@ global $APPLICATION, $USER;
 
 set_time_limit(0);
 
-if (!Loader::includeModule("shape.answer")) {
+if (!Loader::includeModule("shape.answer"))
+{
 	ShowError("Module is not installed");
 	return;
 }
 
-
-$arFields = [];
-$arFields = [
-	'META_ONE' => ['ID' => 'META_ONE', 'NAME' => 'META ONE']
-	, 'META_TWO' => ['ID' => 'META_TWO', 'NAME' => 'META TWO']
-	, 'META_THREE' => ['ID' => 'META_THREE', 'NAME' => 'META THREE']
-	, 'META_FOUR' => ['ID' => 'META_FOUR', 'NAME' => 'META FOUR']
-];
-
+$arFields=Answer\HLTable::arFields;
 
 $arMetaFields = array(
 	"NAME" => Loc::getMessage("SHAPE_ANSWER_FIELDS_NAME"),
@@ -33,15 +26,28 @@ $arMetaFields = array(
 	"METANAME" => Loc::getMessage("SHAPE_ANSWER_FIELDS_METANAME"),
 );
 
-if (($_REQUEST['tabControl_active_tab'] == 'shape_answer_tab_setting' || $_REQUEST['action'] == 'meta_fields') && $REQUEST_METHOD == "POST" /*&& check_bitrix_sessid()*/) {
+if (($_REQUEST['tabControl_active_tab']=='shape_answer_tab_setting' || $_REQUEST['action']=='meta_fields') && $REQUEST_METHOD=="POST" /*&& check_bitrix_sessid()*/)
+{
 
 
-	$arOption = array(
-		"META_ONE" => isset($_POST["META_ONE"]) ? "Y" : "",
-		"META_TWO" => isset($_POST["META_TWO"]) ? "Y" : "",
-		"META_THREE" => isset($_POST["META_THREE"]) ? "Y" : "",
-		"META_FOUR" => isset($_POST["META_FOUR"]) ? "Y" : ""
-	);
+	$arOption=[];
+	$_c=count(array_keys($arFields));
+	while ($_c--)
+	{
+		$_k=array_keys($arFields)[$_c];
+		$obj=$arFields[$_k];
+		if (!$obj['HIDE'])
+		{
+			if (isset($_POST[$_k]))
+			{
+				$arOption[$obj['NAME']]='Y';
+			}
+			else
+			{
+				$arOption[$obj['NAME']]='';
+			}
+		}
+	}
 	$sOption = serialize($arOption);
 
 	\Bitrix\Main\Config\Option::set("shape.answer", "AUTO", $sOption);
@@ -58,9 +64,10 @@ if (($_REQUEST['tabControl_active_tab'] == 'shape_answer_tab_setting' || $_REQUE
 
 $APPLICATION->SetTitle('SHAPE_ANSWER_INDEX_TITLE');
 
-if (!$islcl > 0)
+if(!$islcl>0)
 	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
+ 
 
 \CJSCore::Init(array("jquery"));
 
@@ -82,46 +89,40 @@ $tabControl = new \CAdminTabControl("tabControl", $aTabs, true, true);
 
 $tabControl->Begin();
 ?>
-<form method="POST"
-      action="<? echo $APPLICATION->GetCurPage() ?>?lang=<? echo LANG ?>&amp;tabControl_active_tab=shape_answer_tab_setting"
-      id="form-export-users">
-	<? $tabControl->BeginNextTab(); ?>
-    <tr class="heading">
-        <td colspan="2">SET TITLE..</td>
-    </tr>
-    <td width="50%">Обязательные поля</td>
-    <td><?
-		foreach ($arOption as $k => $v) {
-			if (!empty($v) || $v != "") {
-				$v = "Y";
-			}
-			?>
-            <input type="checkbox" id="<?= $k; ?>" name="<?= $arFields[$k]['NAME']; ?>" value=""<?
-			if (!empty($v) || $v != ""):?> checked="checked"<?endif; ?> /> <label
-                    for="<?= $k; ?>"><?= $arFields[$k]['NAME']; ?></label><br/>
-			<?
-		}
+<form method="POST" action="<?echo $APPLICATION->GetCurPage()?>?lang=<?echo LANG?>&amp;tabControl_active_tab=shape_answer_tab_setting" id="form-export-users">
+	<?$tabControl->BeginNextTab();?>
+	<tr class="heading">
+		<td colspan="2">SET TITLE..</td>
+	</tr>
+	<td width="50%">Обязательные поля</td>
+				<td><?
+	foreach($arOption as $k=>$v){
+		if (!empty($v) || $v != ""){$v="Y";}
+		// print_r($arFields[$k]);
+		?>
+		<input type="checkbox" id="<?=$k;?>" name="<?=$arFields[$k]['ID'];?>" value=""<?if (!empty($v) || $v != ""):?> checked="checked"<?endif;?> /> <label for="<?=$arFields[$k]['ID'];?>"><?=$arFields[$k]['NAME'];?></label><br />
+		<?
+	}
 
-
-		?>            </td>
-
-
-    <tr>
-        <td colspan="2" align="left">
-            <input type="hidden" name="action" value="meta_fields"/>
-            <input type="submit" id="meta_fields_submit"
-                   value="Сохранить<? //=Loc::getMessage("SHAPE_ANSWER_AUTO_SAVE_BT")?>" class="adm-btn-save"/>
-        </td>
-    </tr>
-	<? $tabControl->EndTab(); ?>
+	
+	?>			</td>
+		
+	
+	<tr>
+		<td colspan="2" align="left">
+			<input type="hidden" name="action" value="meta_fields" />
+			<input type="submit" id="meta_fields_submit" value="Сохранить<?//=Loc::getMessage("SHAPE_ANSWER_AUTO_SAVE_BT")?>" class="adm-btn-save" />
+		</td>
+	</tr>
+	<?$tabControl->EndTab();?>
 </form>
 
 <?
 ?>
 
-<? $tabControl->End(); ?>
+<?$tabControl->End();?>
 
 <?
-if (!$islcl > 0)
-	require_once($_SERVER["DOCUMENT_ROOT"] . BX_ROOT . "/modules/main/include/epilog_admin.php");
+if(!$islcl>0)
+	require_once($_SERVER["DOCUMENT_ROOT"].BX_ROOT."/modules/main/include/epilog_admin.php");
 ?>
