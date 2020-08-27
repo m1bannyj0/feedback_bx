@@ -10,8 +10,17 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
+use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\Loc;
+use Shape\Answer;
 
-include "functions.php"; ?>
+if (Loader::includeModule("shape.answer"))
+{
+    $arFields=Answer\HLTable::arFields;
+    echo '<script> window.ShapeReqFields='.json_encode($arFields).';<script> '
+}
+
+ ?>
 <main id="c-forms-container" class="cognito c-firefox c-med">
 
 
