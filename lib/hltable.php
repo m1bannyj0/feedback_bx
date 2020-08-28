@@ -185,6 +185,10 @@ class HLTable
 					foreach ($table['values'] as $item) {
 						$entityClass::add($item);
 					}
+				}else{
+
+					$errors = $result->getErrorMessages(); // получаем сообщения об ошибках
+					return $errors;
 				}
 			}
 		}

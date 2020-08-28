@@ -1,5 +1,5 @@
 <?
-/** options
+/** ajax
  * Copyright (c) 2020. . https://github.com/mrBannyJo
  */
 if ($_SERVER["REQUEST_METHOD"] != "POST" and !isset($_POST["action"])) {
@@ -18,7 +18,7 @@ if (!CModule::IncludeModule("iblock")) {
 }
 
 global $USER, $APPLICATION;
-
+use \Bitrix\Main\Type\DateTime;
 CUtil::JSPostUnescape();
 
 $answer = Array();
@@ -30,6 +30,24 @@ $action = $_POST["action"];
 $module_id = "shape.answer";
 CModule::IncludeModule($module_id);
 
+
+function custom_beatifulerstring($ans){
+/*	input: 	["bla bla UF_EMAIL"]
+	output:	["email"]				*/	
+	$arFields=Shape\Answer\HLTable::arFields;
+	foreach(array_keys($arFields) as $k=>$v){
+		$_c=count($ans);
+		while ($_c--)
+		{
+			if (strpos($ans[$_c],$v) !== false)
+			{
+				$ans[$_c]=mb_strtolower($v, 'UTF-8');
+			}
+		}
+	}
+	return $ans;
+	
+}
 
 if ($action == 'writeform') {
 	$arFormatted = [];
@@ -45,9 +63,10 @@ if ($action == 'writeform') {
 		array_keys($_REQUEST['data']),
 		array_values($_REQUEST['data'])
 	);
-
+	
+	
 	$arFormatted['UF_ID_AGREE'] = 1;
-	$arFormatted['UF_DATE'] = '';
+	$arFormatted['UF_DATE'] = new \Bitrix\Main\Type\DateTime;
 	$arFormatted['UF_SORT'] = 100;
 	$arFormatted['UF_URL'] = $_SERVER['HTTP_REFERER'];
 	$arFormatted['UF_IP'] = $_SERVER['REMOTE_ADDR'];
@@ -55,7 +74,14 @@ if ($action == 'writeform') {
 	$addResult = Shape\Answer\EntityTable::add(
 		$arFormatted
 	);
-	$answer["id_hl"] = (int)$addResult;
+	if ($addResult->isSuccess())
+	{
+		$answer["id_hl"] = $addResult->getId();
+	}
+	else
+	{
+		$answer["errors"]=(custom_beatifulerstring($addResult->getErrorMessages()));
+	}
 	if ($answer["id_hl"] > 0) $answer["success"] = 1;
 }
 

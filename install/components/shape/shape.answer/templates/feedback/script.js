@@ -1,48 +1,51 @@
-﻿console.log('..inits');
+﻿
+console.log('..init');
 
 BX.namespace('BX.Lc.Main');
             
 $(function() {
-        var hnm = $(".c-name > .c-editor > input"),
+        var hnm = $(".c-text-name > .c-editor > input"),
             hph = $(".c-text-phone > .c-editor > input"),
             hem = $(".c-text-email > .c-editor > input"),
-			hcl = $(".c-choice-dropdown > .c-editor > #c-3-3"),
-			htx = $(".c-text-message > .c-editor > #c-4-2"),
+			hcl = $(".c-text-color > .c-editor > #c-3-3"),
+			htx = $(".c-text-msg > .c-editor > #c-4-2"),
 			oag = $(".c-agree > #n2_69"),
 			osb = $("#c-submit-button"),
 			ofr = $("#c-forms"),
+			obd=$(".c-forms-form-body"),
 			ajaxPath = '/bitrix/components/shape/shape.answer/ajax.php',
             i, n, answer , checkall=0,
-            debug=true;
+            debug=false;
 			
 			BX.Lc.Main = {
             initExist: function () {
                 console.log('..preset:',i.isEmpty($("#c-forms")));
             }};
     
-            answer= (answer!==undefined)?answer:{
-            "c-phone":'',
-            "c-name":'1',
-            "c-text-email":'',
-            "c-text-message":'',
-            "c-agree":''
-            }
+
             console.log('..next');
+			
     
+			$('.c-button-section').on('mouseover', function(e){
+				debug&&(console.log('..inspect'))
+				requredls=window.ShapeReqFields;
+                var sO=Object.keys(requredls);
+                Object.keys(requredls).forEach((value,index)=>!i.isEmpty(requredls[value])&&checkall++);
+                if (sO.length===checkall) {
+                    debug&&console.log('..complete message',sO.length,checkall);
+                } else {
+                    debug&&console.log('..not complete message',sO.length,checkall);
+                    for (var key in requredls) {
+                    !i.isEmpty(requredls[key])&&!$("."+key).find(".c-editor > input").val()&&n.invalidStyle($("."+key))
+                    } 
+                }			
+			});
+			
+			
        
             ofr.on('submit', function(e){
                 e.preventDefault();
-                var sO=Object.keys(answer);
-                Object.keys(answer).forEach((value,index)=>!i.isEmpty(answer[value])&&checkall++);
-                if (sO.length===checkall) {
-                    debug&&console.log('..complete message',sO.length,checkall);
-                    
-                } else {
-                    debug&&console.log('..not complete message',sO.length,checkall);
-                    for (var key in answer) {
-                    i.isEmpty(answer[key])&&n.invalidStyle($("."+key))
-                    } 
-                }
+
 				
 				var ajaxArr = {
                         query  : typeof query!='undefined'?query:'empty_query',
@@ -54,8 +57,19 @@ $(function() {
                     };
 
                     $.post(ajaxPath, ajaxArr, function(answer){
-                        console.log('ajaxArr',ajaxArr);
-                        console.log('answer',answer);
+                        debug&&console.log('answer',answer);
+                        window.answer=answer;
+						if (typeof answer['errors']!='undefined')
+						{
+							for (it in answer['errors']) {
+								console.log($(".c-text-"+answer['errors'][it]).find(".c-editor > input").val());
+								n.invalidStyle($(".c-text-"+answer['errors'][it]),'Неверный формат');
+							} 	
+						}
+						if (!$(".c-error").length&&answer['success'])
+						{
+							obd.hide().parent().append('<h1>complete</h1>');
+						}
 
                         if (typeof callback !== 'undefined'){
                             callback(answer);
@@ -77,7 +91,7 @@ $(function() {
                 t.val() !== "" && n.checkLogin()
             },
             checkPhone: function() {
-                // p.val() !== "+7(___)___-__-__" && n.checkPhone()
+                p.val() !== "+7(___)___-__-__" && n.checkPhone()
 
             },
             isEmpty: function(s) {
@@ -93,12 +107,12 @@ $(function() {
             },validStyle: function(t) {
                 // n.setStyle(t, "valid");
                 n.removeClass("c-error");
-                // n.error.hide();
+				t.find(".c-validation").html('Обязательное..')
                 n.checkItems()
             },
             invalidStyle: function(t, i='') {
                 n.setStyle(t, "c-error");
-                // i && n.error.text(i).show()
+				i&&t.find(".c-validation").html(i)
             },
             setStyle: function(n, t) {
                 n = $(n);
@@ -108,7 +122,7 @@ $(function() {
 
         };
         
-            
+        $(".c-text-phone > .c-editor > input").mask('+70000000000', {placeholder: "+7(___)___ __ __"});    
 
 })();   
 

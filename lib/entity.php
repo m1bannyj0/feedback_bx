@@ -1,8 +1,7 @@
 <?php
-/** options
+/** entity
  * Copyright (c) 2020. . https://github.com/mrBannyJo
  */
-
 namespace Shape\Answer;
 
 
@@ -21,7 +20,6 @@ class EntityTable extends Data\DataManager
 
 	public static function getMap()
 	{
-
 		return array(
 			'ID' => array(
 				'data_type' => 'integer',
@@ -42,11 +40,13 @@ class EntityTable extends Data\DataManager
 			'UF_PHONE' => array(
 				'data_type' => 'text',
 				'default_value' => '',
+				'validation' => array(__CLASS__, 'validationPhone'),
 				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_PHONE_FIELD'),
 			),
 			'UF_EMAIL' => array(
 				'data_type' => 'text',
 				'default_value' => '',
+				'validation' => array(__CLASS__, 'validationEmail'),
 				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_EMAIL_FIELD'),
 			),
 			'UF_DATE' => array(
@@ -69,23 +69,33 @@ class EntityTable extends Data\DataManager
 				'default_value' => 500,
 				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_SORT_FIELD'),
 			),
+			'UF_COLOR' => array(
+				'data_type' => 'text',
+				'default_value' => 500,
+				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_COLOR_FIELD'),
+			),
 			'UF_MSG' => array(
 				'data_type' => 'text',
 				'default_value' => '',
 				'title' => Loc::getMessage('SHAPE_ANSWER_ENTITY_MSG_FIELD'),
 			),
 		);
-
-
 	}
+
+	public static function validationPhone()
+	{
+		return array(
+            new \Bitrix\Main\Entity\Validator\RegExp('/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/')
+        );
+	}
+	public static function validationEmail()
+	{
+		return array(
+            new \Bitrix\Main\Entity\Validator\RegExp('/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
+        );
+	}	
+
+	
 
 
 }
-
-// $ret=new State;
-// print_r(bindec('100001')."\n");
-// print_r(decbin('33')."\n");
-// print_r($ret);
-// print_r($ret::langDec('NEW'));
-// print_r($ret::setCODE(54720,'NEW'));
-// print_r("\n");

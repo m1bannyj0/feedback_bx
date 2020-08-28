@@ -17,7 +17,16 @@ use Shape\Answer;
 if (Loader::includeModule("shape.answer"))
 {
     $arFields=Answer\HLTable::arFields;
-    echo '<script> window.ShapeReqFields='.json_encode($arFields).';<script> '
+    $arOption = unserialize(\Bitrix\Main\Config\Option::get("shape.answer", "AUTO"));
+    
+    $_c=count($arOption);
+    $_a=array_keys($arOption);
+    $_arOption=[];
+    while ($_c--)
+    {
+        $_arOption['c-text-'.mb_strtolower($_a[$_c], 'UTF-8')]=$arOption[$_a[$_c]];
+    }
+    echo '<script> window.ShapeReqFields='.json_encode($_arOption).';</script> ';
 }
 
  ?>
@@ -36,23 +45,22 @@ if (Loader::includeModule("shape.answer"))
                 <div class="c-forms-template" sys:attach="dataview"
                      dataview:data="{binding entry, source={{ Cognito.Forms.model }} }">
                     <div class="c-forms-form-main c-span-24 c-sml-span-12">
-                        <div class="c-name c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
+                        <div class="c-text-name c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
                             <div class="c-label  "><label id="c-0-6-label" for="c-0-6">Name <span
                                             class="c-offscreen c-required-screenreaders">required</span> <span
                                             class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
                             </div>
                             <div class="c-editor"><input type="text" id="c-0-6" placeholder="" name="name"></div>
-                            <div class="c-validation" aria-hidden="true"></div>
+                            <div class="c-validation" aria-hidden="true">Обязательно к заполнению.</div>
                         </div>
-                        <div class="c-phone c-phone-international c-field  c-col-9 c-sml-col-1 c-span-8 c-sml-span-12  c-required">
+                        <div class="c-text-phone c-phone-international c-field  c-col-9 c-sml-col-1 c-span-8 c-sml-span-12  c-required">
                             <div class="c-label  "><label id="c-1-5-label" for="c-1-5">Phone <span
                                             class="c-offscreen c-required-screenreaders">required</span> <span
-                                            class="c-offscreen c-validation-screenreaders">, <span>Phone is required.</span></span></label>
+                                            class="c-offscreen c-validation-screenreaders">, <span>Обязательно к заполнению.</span></span></label>
                             </div>
                             <div class="c-editor c-editor-phone"><input type="text" name="phone" id="c-1-5"
-                                                                        placeholder="+7"
-                                                                        autocomplete="tel" novalidate=""></div>
-                            <div class="c-validation" aria-hidden="true">Phone is required.</div>
+                                                                        autocomplete="tel" novalidate="" data-mask="+7 (000) 000 00 00" placeholder="+7 (___) ___ __ __"></div>
+                            <div class="c-validation" aria-hidden="true">Обязательно к заполнению.</div>
                         </div>
                         <div class="c-text-email c-field  c-col-17 c-sml-col-1 c-span-8 c-sml-span-12">
                             <div class="c-label  "><label id="c-2-4-label" for="c-2-4">E-mail <span
@@ -60,9 +68,9 @@ if (Loader::includeModule("shape.answer"))
                                             class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
                             </div>
                             <div class="c-editor"><input type="text" id="c-2-4" placeholder="" name="email"></div>
-                            <div class="c-validation" aria-hidden="true"></div>
+                            <div class="c-validation" aria-hidden="true">Обязательно к заполнению.</div>
                         </div>
-                        <div class="c-choice-dropdown c-color c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
+                        <div class="c-choice-dropdown .c-text-color c-color c-field  c-col-1 c-sml-col-1 c-span-8 c-sml-span-12">
                             <div class="c-label  "><label id="c-3-3-label" for="c-3-3">Выбор цвета <span
                                             class="c-offscreen c-required-screenreaders">required</span> <span
                                             class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
@@ -75,16 +83,16 @@ if (Loader::includeModule("shape.answer"))
                                         <option value="blue">Синий</option>
                                     </select></div>
                             </div>
-                            <div class="c-validation" aria-hidden="true"></div>
+                            <div class="c-validation" aria-hidden="true">Обязательно к заполнению.</div>
                         </div>
-                        <div class="c-text-message c-field  c-col-1 c-sml-col-1 c-span-12 c-sml-span-12">
+                        <div class="c-text-message .c-text-msg c-field  c-col-1 c-sml-col-1 c-span-12 c-sml-span-12">
                             <div class="c-label  "><label id="c-4-2-label" for="c-4-2">Текствое сообщение <span
                                             class="c-offscreen c-required-screenreaders">required</span> <span
                                             class="c-offscreen c-validation-screenreaders">, <span></span></span></label>
                             </div>
                             <div class="c-editor"><textarea id="c-4-2" placeholder="" name="texmessage"></textarea>
                             </div>
-                            <div class="c-validation" aria-hidden="true"></div>
+                            <div class="c-validation" aria-hidden="true">Обязательно к заполнению.</div>
                         </div>
                     </div>
                 </div>
