@@ -43,7 +43,7 @@ $tabControl = new \CAdminTabControl("tabControl", $aTabs, true, true);
 
 $arItems = [];
 $dbItems = \Shape\Answer\EntityTable::getList(array(
-	'select' => ['*']
+	'select' => ['*'], 'order' => array('ID' => 'DESC'), 'limit' => 10,
 ));
 
 

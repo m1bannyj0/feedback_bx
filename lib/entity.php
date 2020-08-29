@@ -2,6 +2,7 @@
 /** entity
  * Copyright (c) 2020. . https://github.com/mrBannyJo
  */
+
 namespace Shape\Answer;
 
 
@@ -85,17 +86,16 @@ class EntityTable extends Data\DataManager
 	public static function validationPhone()
 	{
 		return array(
-            new \Bitrix\Main\Entity\Validator\RegExp('/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/')
-        );
+			new \Bitrix\Main\Entity\Validator\RegExp('/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/')
+		);
 	}
+
 	public static function validationEmail()
 	{
 		return array(
-            new \Bitrix\Main\Entity\Validator\RegExp('/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
-        );
-	}	
-
-	
+			new \Bitrix\Main\Entity\Validator\RegExp('/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/')
+		);
+	}
 
 
 }

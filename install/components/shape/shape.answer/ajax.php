@@ -18,7 +18,9 @@ if (!CModule::IncludeModule("iblock")) {
 }
 
 global $USER, $APPLICATION;
+
 use \Bitrix\Main\Type\DateTime;
+
 CUtil::JSPostUnescape();
 
 $answer = Array();
@@ -31,22 +33,21 @@ $module_id = "shape.answer";
 CModule::IncludeModule($module_id);
 
 
-function custom_beatifulerstring($ans){
-/*	input: 	["bla bla UF_EMAIL"]
-	output:	["email"]				*/	
-	$arFields=Shape\Answer\HLTable::arFields;
-	foreach(array_keys($arFields) as $k=>$v){
-		$_c=count($ans);
-		while ($_c--)
-		{
-			if (strpos($ans[$_c],$v) !== false)
-			{
-				$ans[$_c]=mb_strtolower($v, 'UTF-8');
+function stripErrorsAnswer($ans)
+{
+	/*	input: 	["bla bla UF_EMAIL"]
+		output:	["email"]				*/
+	$arFields = Shape\Answer\HLTable::arFields;
+	foreach (array_keys($arFields) as $k => $v) {
+		$_c = count($ans);
+		while ($_c--) {
+			if (strpos($ans[$_c], $v) !== false) {
+				$ans[$_c] = mb_strtolower($v, 'UTF-8');
 			}
 		}
 	}
 	return $ans;
-	
+
 }
 
 if ($action == 'writeform') {
@@ -63,8 +64,8 @@ if ($action == 'writeform') {
 		array_keys($_REQUEST['data']),
 		array_values($_REQUEST['data'])
 	);
-	
-	
+
+
 	$arFormatted['UF_ID_AGREE'] = 1;
 	$arFormatted['UF_DATE'] = new \Bitrix\Main\Type\DateTime;
 	$arFormatted['UF_SORT'] = 100;
@@ -74,16 +75,15 @@ if ($action == 'writeform') {
 	$addResult = Shape\Answer\EntityTable::add(
 		$arFormatted
 	);
-	if ($addResult->isSuccess())
-	{
+	if ($addResult->isSuccess()) {
 		$answer["id_hl"] = $addResult->getId();
-	}
-	else
-	{
-		$answer["errors"]=(custom_beatifulerstring($addResult->getErrorMessages()));
+	} else {
+
+		$answer["errors"] = (stripErrorsAnswer($addResult->getErrorMessages()));
 	}
 	if ($answer["id_hl"] > 0) $answer["success"] = 1;
 }
 
+$answer['required'] = Shape\Answer\Json::getOption();
 
 echo json_encode($answer);
